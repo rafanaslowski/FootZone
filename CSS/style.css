@@ -99,3 +99,41 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
+
+/* Barra de navegação */
+header {
+  position: fixed;   
+  top: 0;            
+  width: 100%;       
+  z-index: 1000; }
+
+.navbar {
+  background-color: #000000;
+  color: #aaa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #d4af37;
+}
