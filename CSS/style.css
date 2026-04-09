@@ -137,3 +137,9 @@ header {
 .nav-links a:hover {
     color: #d4af37;
 }
+
+h4 {
+  color: white;
+  margin-top: 15px;
+  text-align: left;
+}
