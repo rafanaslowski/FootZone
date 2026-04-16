@@ -124,7 +124,7 @@ header {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 2.0rem;
 }
 
 .nav-links a {
@@ -142,4 +142,32 @@ h4 {
   color: white;
   margin-top: 15px;
   text-align: left;
+}
+
+/* campo errado */
+.erro {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* vizualizar senha */
+.campo-senha {
+    position: relative;
+    width: 100%;
+}
+
+.campo-senha input {
+    width: 100%;
+    padding-right: 35px; 
+}
+
+.toggle-senha {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
 }
