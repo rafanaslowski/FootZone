@@ -1,80 +1,48 @@
-// mascara para nome, permitindo apenas letras e espaços e limitando a 50 caracteres
-function MascaraNome (input) {
-    let valor = input.value;
+// MÁSCARAS
+function MascaraNome(input) {
+    input.value = input.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "").slice(0, 100);
+}
+function mascaraEmail(input) {
+    input.value = input.value.replace(/[^a-zA-Z0-9@._-]/g, "").toLowerCase().slice(0, 100);
+}
+function mascaraCPF(input) {
+    let v = input.value.replace(/\D/g, "").slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    input.value = v;
+}
+function mascaraTelefone(input) {
+    let v = input.value.replace(/\D/g, "").slice(0, 11);
+    v = v.replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2");
+    input.value = v;
+}
 
-    valor = valor.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
-    input.value = valor;
+// INTEGRAÇÃO (INSERT E REDIRECIONAMENTO PARA O SELECT)
+document.getElementById('btnCadastrar').addEventListener('click', function() {
+    const dados = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        senha: document.getElementById('senha').value
+    };
 
-    if (valor.length > 100) {
-        input.value = valor.slice(0, 100);
+    if (!dados.nome || !dados.email || !dados.senha) {
+        alert("Preencha os campos obrigatórios!");
+        return;
     }
-}
-// mascara para cahve de acesso, permitindo apenas números e limitando a 8 caracteres
-function mascaraChavedeAcesso (input) {
-   let valor = input.value;
-    
-    valor = valor.replace(/\D/g, "");
-    input.value = valor;
 
-    if (valor.length > 8) {
-        input.value = valor.slice(0, 8);
-    }
-}
-//mascara para email, permitindo carateres validos e apenas letras minusculas
-function mascaraEmail (input) {
-    let valor = input.value;
-
-    valor = valor.replace(/[^a-zA-Z0-9@._-]/g, "");
-    input.value = valor.toLowerCase();
-
-    if (valor.length > 100) {
-        input.value = valor.slice(0, 100);
-    }
-}
-
-// mascara para cpf, permitindo apenas números e limitando a 11 caracteres
-function mascaraCPF (input) {
-    let valor = input.value;
-
-    valor = valor.replace(/\D/g, "");
-
-     
-    valor = valor.slice(0,11);
-    
-
-    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
-    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-    
-    
-    input.value = valor;
-}
-
-// mascara para telefone permitindo apenas números e limitando a 11 caracteres e formatando 
-function mascaraTelefone (input) {
-    let valor = input.value;    
-
-    valor = valor.replace(/\D/g, "");
-    valor = valor.slice(0,11);
-
-    valor = valor.replace(/(\d{2})(\d)/, "($1) $2");
-    valor = valor.replace(/(\d{5})(\d)/, "$1-$2"); 
-    
-    input.value = valor;
-}
-
-// mascara para cnpj, permitindo apenas números e limitando a 14 caracteres e formatando
-function mascaraCNPJ (input) {
-    let valor = input.value;  
-
-    valor = valor.replace(/\D/g, "");
-    valor = valor.slice(0,14); 
-         
-    valor = valor.replace(/(\d{2})(\d)/, "$1.$2");
-    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
-    valor = valor.replace(/(\d{3})(\d)/, "$1/$2");
-    valor = valor.replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-
-    input.value = valor;
-}
-
+    fetch('http://127.0.0.1:5000/usuarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.mensagem) {
+            alert("Sucesso! " + data.mensagem);
+            // PROVA DO SELECT: Redireciona para ver o dado no banco
+            window.location.href = "http://127.0.0.1:5000/usuarios";
+        } else {
+            alert("Erro: " + data.erro);
+        }
+    })
+    .catch(err => alert("Erro de conexão! Verifique o terminal do Python."));
+});
