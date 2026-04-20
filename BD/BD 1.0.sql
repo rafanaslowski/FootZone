@@ -1,7 +1,7 @@
 -- =====================
 -- CRIAR BANCO
 -- =====================
-CREATE DATABASE marketplace_tenis;
+CREATE DATABASE IF NOT EXISTS marketplace_tenis;
 USE marketplace_tenis;
 
 -- =====================
