@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* FUNDO */
+body {
+  height: 800px;
+  background: #0a0a0a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* LOGO DE FUNDO */
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("../Imagens/logo.png") repeat center;
+  background-size:50%;
+  opacity: 0.08;
+}
+
+/* CAIXA */
+.login-caixa {
+  position: relative;
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+/* campos */
+.campos {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+/* TODOS IGUAIS */
+.campos a {
+  flex: 1;
+  padding: 10px;
+  text-align: center;        
+  text-decoration: none;  
+  border-radius: 7px;  
+            
+  
+  
+}
+
+/* DESATIVADO */
+.campoDesativado {
+  color: #aaa;
+  background: transparent;
+}
+
+/* ATIVO */
+.campoAtivo {
+  color: #d4af37;
+  border-bottom: 2px solid #d4af37;
+  background: transparent;
+}
+
+/* TEXTO */
+h2 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid white;
+  background: #1c1c1c;
+  color: white;
+  border-radius: 10px;
+}
+
+input:focus {
+  border: 2px solid #d4af37;
+  outline: none; 
+}
+
+
+/* BOTÃO */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  background: #d4af37;
+  color: black;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Barra de navegação */
+header {
+  position: fixed;   
+  top: 0;            
+  width: 100%;       
+  z-index: 1000; }
+
+.navbar {
+  background-color: #000000;
+  color: #aaa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2.0rem;
+}
+
+.nav-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #d4af37;
+}
+
+h4 {
+  color: white;
+  margin-top: 15px;
+  text-align: left;
+}
+
+/* campo errado */
+.erro {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* vizualizar senha */
+.campo-senha {
+    position: relative;
+    width: 100%;
+}
+
+.campo-senha input {
+    width: 100%;
+    padding-right: 35px; 
+}
+
+.toggle-senha {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
