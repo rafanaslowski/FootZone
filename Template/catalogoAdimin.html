@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Static/style.css">
-    <title>Catalogo-FootZone-Adimin</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <title>Catálogo - FootZone</title>
 </head>
 <body>
-
 <header>
     <nav class="navbar">
-        <a href="INICIO" class="logo">
-        <img class="logo" src="/Imagens/logo.png" alt="Logo FootZone">
-        </a>
-            <ul class="nav-links">
-                <li><a href="#">Início</a></li>
-                <li><a href="#">Catálogo</a></li>
-                <li><a href="#">Sobre</a></li>
-                <li><a href="#">Carrinho</a></li>
-                <li><a href="#">Favoritos</a></li>
-                <li><a href="#">Admin</a></li>
-            </ul>
+        <a href="/" class="logo"><img src="/Imagens/logo.png" alt="Logo"></a>
+        <ul class="nav-links">
+            <li><a href="/catalogo">Catálogo</a></li>
+            <li><a href="/usuario">Sair</a></li>
+        </ul>
     </nav>
 </header>
 
-    <script src="../Static/script.js"></script>
+<main style="margin-top: 100px;">
+    <h2 style="text-align: center; color: #d4af37;">Vitrine de Tênis</h2>
+    <div class="vitrine">
+        {% for produto in produtos %}
+        <div class="produto-card">
+            <img src="{{ produto.url if produto.url else 'https://via.placeholder.com/200' }}" alt="Tênis">
+            <div class="info">
+                <h3>{{ produto.nome }}</h3>
+                <p>{{ produto.marca }} | Tam: {{ produto.tamanho }}</p>
+                <p class="preco">R$ {{ "{:.2f}".format(produto.preco) }}</p>
+                <button class="btn-comprar">Comprar</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
 </body>
 </html>

@@ -9,5 +9,5 @@ def conectar_banco():
             database="marketplace_tenis"
         )
     except mysql.connector.Error as err:
-        print(f"Erro ao conectar no banco: {err}")
+        print(f"Erro ao conectar: {err}")
         return None

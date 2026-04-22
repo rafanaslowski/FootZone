@@ -1,94 +1,73 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from backend.db import conectar_banco
+import os
+import uvicorn
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from db import conectar_banco 
 
 app = FastAPI()
 
-# CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Configuração de Caminhos
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# --------------------
-# SCHEMAS
-# --------------------
-class UsuarioCreate(BaseModel):
-    nome: str
-    email: str
-    senha: str
+app.mount("/Static", StaticFiles(directory=os.path.join(BASE_DIR, "Static")), name="static")
+app.mount("/Imagens", StaticFiles(directory=os.path.join(BASE_DIR, "Imagens")), name="imagens")
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "Template"))
 
-class LoginData(BaseModel):
-    email: str
-    senha: str
+# --- ROTAS DE NAVEGAÇÃO ---
+@app.get("/", response_class=HTMLResponse)
+@app.get("/usuario", response_class=HTMLResponse)
+async def page_usuario(request: Request):
+    return templates.TemplateResponse(request=request, name="usuario.html")
 
-# --------------------
-# ROTAS
-# --------------------
-@app.get("/usuarios")
-def buscar_usuarios():
+@app.get("/empresa", response_class=HTMLResponse)
+async def page_empresa(request: Request):
+    return templates.TemplateResponse(request=request, name="empresa.html")
+
+@app.get("/admin", response_class=HTMLResponse)
+async def page_admin(request: Request):
+    return templates.TemplateResponse(request=request, name="admin.html")
+
+@app.get("/catalogo", response_class=HTMLResponse)
+async def page_catalogo(request: Request):
     try:
         conn = conectar_banco()
-        if conn is None:
-            raise HTTPException(status_code=500, detail="Erro ao conectar no banco")
-
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id_usuario, nome, email FROM usuario")
-        usuarios = cursor.fetchall()
-
+        cursor.execute("SELECT p.*, i.url FROM produto p LEFT JOIN produto_imagem i ON p.id_produto = i.id_produto GROUP BY p.id_produto")
+        produtos = cursor.fetchall()
         cursor.close()
         conn.close()
-        return usuarios
+        return templates.TemplateResponse(request=request, name="catalogo.html", context={"produtos": produtos})
+    except:
+        return templates.TemplateResponse(request=request, name="catalogo.html", context={"produtos": []})
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/usuarios", status_code=201)
-def cadastrar_usuario(dados: UsuarioCreate):
+# --- PROCESSAMENTO ---
+@app.post("/cadastrar/usuario")
+async def cadastrar_usuario(nome: str = Form(...), email: str = Form(...), senha: str = Form(...), cpf: str = Form(...), telefone: str = Form(...)):
+    conn = conectar_banco()
+    cursor = conn.cursor()
     try:
-        conn = conectar_banco()
-        if conn is None:
-            raise HTTPException(status_code=500, detail="Erro ao conectar no banco")
-
-        cursor = conn.cursor()
-        sql = "INSERT INTO usuario (nome, email, senha_hash) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (dados.nome, dados.email, dados.senha))
+        cursor.execute("INSERT INTO usuario (nome, email, senha_hash) VALUES (%s, %s, %s)", (nome, email, senha))
+        id_user = cursor.lastrowid
+        cursor.execute("INSERT INTO cliente (id_usuario, cpf, telefone) VALUES (%s, %s, %s)", (id_user, cpf.replace(".","").replace("-",""), telefone))
         conn.commit()
-
-        cursor.close()
-        conn.close()
-        return {"mensagem": "Usuário salvo com sucesso!"}
-
+        return RedirectResponse(url="/catalogo", status_code=303)
     except Exception as e:
+        conn.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/login")
-def login(dados: LoginData):
-    try:
-        conn = conectar_banco()
-        if conn is None:
-            raise HTTPException(status_code=500, detail="Erro ao conectar no banco")
-
-        cursor = conn.cursor(dictionary=True)
-        sql = "SELECT * FROM usuario WHERE email = %s AND senha_hash = %s"
-        cursor.execute(sql, (dados.email, dados.senha))
-        usuario = cursor.fetchone()
-
+    finally:
         cursor.close()
         conn.close()
 
-        if usuario:
-            return {"status": "sucesso", "nome": usuario["nome"]}
+@app.post("/login/admin")
+async def login_admin(email: str = Form(...), chave: str = Form(...)):
+    conn = conectar_banco()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT u.nome FROM usuario u JOIN admin a ON u.id_usuario = a.id_usuario WHERE u.email = %s AND a.chave_acesso = %s", (email, chave))
+    if cursor.fetchone():
+        return RedirectResponse(url="/catalogo", status_code=303)
+    raise HTTPException(status_code=401, detail="Credenciais Inválidas")
 
-        raise HTTPException(status_code=401, detail="Login inválido")
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
