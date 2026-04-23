@@ -4,24 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
-    <title>Catálogo - FootZone</title>
+    <title>FootZone - Catálogo</title>
 </head>
 <body>
 
 <header>
     <nav class="navbar">
         <a href="/" class="logo">
-            <img class="logo" src="/Imagens/logo.png" alt="Logo">
+            <img src="/Imagens/logo.png" alt="Logo" style="height: 50px;">
         </a>
         <ul class="nav-links">
             <li><a href="/catalogo">Catálogo</a></li>
-            <li><a href="/usuario">Sair</a></li>
+
+            {% if logado %}
+                <li style="color: #d4af37; font-weight: bold;">Olá, {{ usuario }}</li>
+                <li><a href="/logout" class="btn-logout" style="color: red; text-decoration: none;">Sair</a></li>
+            {% else %}
+                <li><a href="/login" class="btn-login">Login</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
 
-<main style="margin-top: 100px;">
-    <h2 style="text-align: center; color: #d4af37;">Nossos Produtos</h2>
+<main style="margin-top: 100px; padding: 20px;">
+    <h2 style="text-align: center; color: #d4af37; margin-bottom: 30px;">Nossos Produtos</h2>
     <div class="vitrine">
         {% for produto in produtos %}
         <div class="produto-card">
@@ -34,9 +40,10 @@
             </div>
         </div>
         {% else %}
-        <p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum produto disponível no momento.</p>
+        <p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum produto encontrado.</p>
         {% endfor %}
     </div>
 </main>
+
 </body>
 </html>

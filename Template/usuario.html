@@ -9,13 +9,13 @@
     <div class="background"></div>
     <div class="login-caixa">
         <div class="campos">
-            <a href="/usuario" class="campoAtivo">Usuário</a>
-            <a href="/empresa" class="campoDesativado">Empresa</a>
+            <a href="/login" class="campoAtivo">Usuário</a>
+            <a href="#" class="campoDesativado">Empresa</a>
             <a href="/admin" class="campoDesativado">Admin</a>
         </div>
 
         <h2>Cadastro</h2>
-        <form action="/cadastrar/usuario" method="post">
+        <form action="/cadastrar/usuario" method="post" id="cadastro">
             <h4>Nome:</h4>
             <input type="text" name="nome" oninput="MascaraNome(this)" required>
 

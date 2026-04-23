@@ -244,3 +244,14 @@ function toggleConfirmarSenha() {
         input.type = "password";
     }
 }
+
+function toggleSenha() {
+    const senhaInput = document.getElementById('senha');
+    const tipo = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    senhaInput.setAttribute('type', tipo);
+}
+
+// Opcional: Impedir espaços no campo de senha
+document.getElementById('senha').addEventListener('input', function(e) {
+    this.value = this.value.replace(/\s/g, '');
+});

@@ -47,9 +47,6 @@ body {
   text-align: center;        
   text-decoration: none;  
   border-radius: 7px;  
-            
-  
-  
 }
 
 /* DESATIVADO */
@@ -87,8 +84,7 @@ input:focus {
   outline: none; 
 }
 
-
-/* BOTÃO */
+/* BOTÃO PADRÃO */
 button {
   width: 100%;
   padding: 10px;
@@ -105,7 +101,8 @@ header {
   position: fixed;   
   top: 0;            
   width: 100%;       
-  z-index: 1000; }
+  z-index: 1000; 
+}
 
 .navbar {
   background-color: #000000;
@@ -125,8 +122,10 @@ header {
   list-style: none;
   display: flex;
   gap: 2.0rem;
+  align-items: center;
 }
 
+/* LINKS NORMAIS */
 .nav-links a {
   color: #aaa;
   text-decoration: none;
@@ -135,9 +134,25 @@ header {
 }
 
 .nav-links a:hover {
-    color: #d4af37;
+  color: #d4af37;
 }
 
+.nav-links a.btn-login {
+  background-color: #d4af37;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.nav-links a.btn-login:hover {
+  background-color: #b8962e;
+  color: white;
+}
+
+/* TEXTO */
 h4 {
   color: white;
   margin-top: 15px;
@@ -146,32 +161,33 @@ h4 {
 
 /* campo errado */
 .erro {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
-/* vizualizar senha */
+/* visualizar senha */
 .campo-senha {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .campo-senha input {
-    width: 100%;
-    padding-right: 35px; 
+  width: 100%;
+  padding-right: 35px; 
 }
 
 .toggle-senha {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 16px;
-    user-select: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
 }
 
+/* VITRINE */
 .vitrine {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -180,6 +196,7 @@ h4 {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .produto-card {
   background: #111;
   border: 1px solid #333;
@@ -187,5 +204,23 @@ h4 {
   padding: 15px;
   text-align: center;
 }
-.produto-card img { width: 100%; border-radius: 8px; }
-.preco { color: #d4af37; font-weight: bold; font-size: 1.2rem; }
+
+.produto-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.preco {
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.login-body-page {
+    height: 100vh;
+    width: 100vw;
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
