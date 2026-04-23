@@ -8,6 +8,20 @@ USE marketplace_tenis;
 -- TABELAS
 -- =====================
 
+-- ======================================================
+-- RESET DO BANCO FOOTZONE
+-- ======================================================
+
+-- Remove o banco se ele já existir para evitar o Erro 1050
+DROP DATABASE IF EXISTS marketplace_tenis;
+
+CREATE DATABASE marketplace_tenis;
+USE marketplace_tenis;
+
+-- =====================
+-- TABELAS
+-- =====================
+
 CREATE TABLE usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -21,18 +35,19 @@ CREATE TABLE cliente (
     cpf CHAR(11) NOT NULL UNIQUE,
     telefone VARCHAR(20),
     endereco VARCHAR(255),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-        ON DELETE CASCADE
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE admin (
     id_usuario INT PRIMARY KEY,
     nivel_acesso INT NOT NULL,
     departamento VARCHAR(100),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-        ON DELETE CASCADE
+    chave_acesso VARCHAR(50), -- Adicionado para funcionar com seu main.py
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
+-- As demais tabelas seguem o mesmo padrão...
+-- (Garanta que a tabela 'empresa' e 'produto' venham depois de 'admin' e 'categoria')
 CREATE TABLE empresa (
     id_empresa INT AUTO_INCREMENT PRIMARY KEY,
     nome_empresa VARCHAR(150) NOT NULL,
