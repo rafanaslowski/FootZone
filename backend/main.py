@@ -17,6 +17,8 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "..", "Template"))
 def get_usuario_logado(request: Request):
     return request.cookies.get("usuario_nome")
 
+# --- ROTAS DE NAVEGAÇÃO ---
+
 @app.get("/", response_class=HTMLResponse)
 @app.get("/catalogo", response_class=HTMLResponse)
 async def page_catalogo(request: Request):
@@ -37,6 +39,16 @@ async def page_catalogo(request: Request):
 async def page_login(request: Request):
     return templates.TemplateResponse(request=request, name="login.html")
 
+@app.get("/cadastro", response_class=HTMLResponse)
+async def page_cadastro(request: Request):
+    return templates.TemplateResponse(request=request, name="usuario.html")
+
+@app.get("/admin", response_class=HTMLResponse)
+async def page_admin(request: Request):
+    return templates.TemplateResponse(request=request, name="admin.html")
+
+# --- ROTAS DE PROCESSAMENTO (POST) ---
+
 @app.post("/login/usuario")
 async def login_usuario(email: str = Form(...), senha: str = Form(...)):
     conn = conectar_banco()
@@ -46,17 +58,51 @@ async def login_usuario(email: str = Form(...), senha: str = Form(...)):
     user = cursor.fetchone()
     cursor.close()
     conn.close()
-    
     if user:
         response = RedirectResponse(url="/catalogo", status_code=303)
         response.set_cookie(key="usuario_nome", value=user['nome'])
         return response
     return RedirectResponse(url="/login", status_code=303)
 
+@app.post("/login/admin")
+async def login_admin(email: str = Form(...), chave: str = Form(...)):
+    conn = conectar_banco()
+    cursor = conn.cursor(dictionary=True)
+    chave_hash = hashlib.sha256(chave.encode()).hexdigest()
+    cursor.execute("SELECT u.nome FROM usuario u JOIN admin a ON u.id_usuario = a.id_usuario WHERE u.email = %s AND a.chave_acesso = %s", (email, chave_hash))
+    admin = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if admin:
+        response = RedirectResponse(url="/catalogo", status_code=303)
+        response.set_cookie(key="admin_logado", value="true")
+        response.set_cookie(key="usuario_nome", value=admin['nome'])
+        return response
+    raise HTTPException(status_code=401, detail="Credenciais de Admin Inválidas")
+
+@app.post("/cadastrar/usuario")
+async def cadastrar_usuario(nome: str = Form(...), email: str = Form(...), cpf: str = Form(...), telefone: str = Form(...), senha: str = Form(...)):
+    conn = conectar_banco()
+    cursor = conn.cursor()
+    try:
+        senha_hash = hashlib.sha256(senha.encode()).hexdigest()
+        cursor.execute("INSERT INTO usuario (nome, email, senha_hash) VALUES (%s, %s, %s)", (nome, email, senha_hash))
+        id_novo = cursor.lastrowid
+        cursor.execute("INSERT INTO cliente (id_usuario, cpf, telefone) VALUES (%s, %s, %s)", (id_novo, ''.join(filter(str.isdigit, cpf)), telefone))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=400, detail="Erro ao cadastrar")
+    finally:
+        cursor.close()
+        conn.close()
+    return RedirectResponse(url="/login", status_code=303)
+
 @app.get("/logout")
 async def logout():
     response = RedirectResponse(url="/", status_code=303)
     response.delete_cookie("usuario_nome")
+    response.delete_cookie("admin_logado")
     return response
 
 if __name__ == "__main__":
