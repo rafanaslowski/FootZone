@@ -16,29 +16,65 @@
 
         <h2>Cadastro</h2>
         <form action="/cadastrar/usuario" method="post" id="cadastro">
-            <h4>Nome:</h4>
-            <input type="text" name="nome" oninput="MascaraNome(this)" required>
+    <!-- Campo Nome -->
+    <label for="nome">
+        <h4>Nome <span class="obrigatorio">*</span></h4>
+    </label>
+    <input type="text" id="nome" name="nome" oninput="MascaraNome(this)" required>
+    <span id="erro-nome" class="erro"></span>
 
-            <h4>CPF:</h4>
-            <input type="text" name="cpf" id="cpf" oninput="mascaraCPF(this)" placeholder="000.000.000-00" required>
+    <!-- Campo CPF -->
+    <label for="cpf">
+        <h4>CPF <span class="obrigatorio">*</span></h4>
+    </label>
+    <input type="text" name="cpf" id="cpf" oninput="mascaraCPF(this)" placeholder="000.000.000-00" required>
+    <span id="erro-cpf" class="erro"></span>
 
-            <h4>Email:</h4>
-            <input type="email" name="email" oninput="mascaraEmail(this)" required>
+    <!-- Campo Email -->
+    <label for="email">
+        <h4>Email <span class="obrigatorio">*</span></h4>
+    </label>
+    <input type="email" name="email" id="email" oninput="mascaraEmail(this)" required>
+    <span id="erro-email" class="erro"></span>
 
-            <h4>Telefone:</h4>
-            <input type="text" name="telefone" oninput="mascaraTelefone(this)" placeholder="(00) 00000-0000" required>
+    <!-- Campo Telefone -->
+    <label for="telefone">
+        <h4>Telefone <span class="obrigatorio">*</span></h4>
+    </label>
+    <input type="text" name="telefone" id="telefone" oninput="mascaraTelefone(this)" placeholder="(00) 00000-0000" required>
+    <span id="erro-telefone" class="erro"></span>
 
-            <h4>Senha: </h4>
-            <div class="campo-senha">
-            <input type="password" name="senha" id="senha" oninput="senhaForte(this)" required>
-            <span class="toggle-senha" onclick="toggleSenha()" id="btnSenha"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#d4af37"><path d="M480.2-192q-148.2 0-264.7-80.5T48-480q51-127 167.3-207.5Q331.6-768 479.8-768t264.7 80.5Q861-607 912-480q-51 127-167.3 207.5Q628.4-192 480.2-192ZM181-130q-43.04-27.14-77.02-61.07T48-267l64-34q17 32 47 61t65 51l-43 59Zm299-134q115.38 0 209.69-58T833-480q-49-100-143.31-158T480-696q-115.38 0-209.69 58T127-480q49 100 143.31 158T480-264ZM246-96l43-61q35.07 13.71 74.03 22.86Q402-125 444-122.3V-50q-56-4-105.5-16T246-96Zm234-216q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm36 334v-72q42-2 80.97-11.14Q635.93-142.29 671-156l43 60q-44 19-93 30.5T516-50Zm263-80-43-59q38-24 66.5-52t45.5-60l64 34q-22 42-55.98 75.93Q822.04-157.14 779-130ZM480-480Z"/></svg></span>
-            </div>
+    <!-- Campo Senha -->
+    <label for="senha">
+        <h4>Senha <span class="obrigatorio">*</span></h4>
+    </label>
+    <div class="campo-senha">
+        <input type="password" name="senha" id="senha" oninput="senhaForte(this)" required>
+        <span class="toggle-senha" onclick="toggleSenha()" id="btnSenha">
+            <!-- Ícone de alternar visibilidade da senha -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#d4af37">
+                <path d="M480.2-192q-148.2 0-264.7-80.5T48-480q51-127 167.3-207.5Q331.6-768 479.8-768t264.7 80.5Q861-607 912-480q-51 127-167.3 207.5Q628.4-192 480.2-192ZM181-130q-43.04-27.14-77.02-61.07T48-267l64-34q17 32 47 61t65 51l-43 59Zm299-134q115.38 0 209.69-58T833-480q-49-100-143.31-158T480-696q-115.38 0-209.69 58T127-480q49 100 143.31 158T480-264ZM246-96l43-61q35.07 13.71 74.03 22.86Q402-125 444-122.3V-50q-56-4-105.5-16T246-96Zm234-216q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm36 334v-72q42-2 80.97-11.14Q635.93-142.29 671-156l43 60q-44 19-93 30.5T516-50Zm263-80-43-59q38-24 66.5-52t45.5-60l64 34q-22 42-55.98 75.93Q822.04-157.14 779-130ZM480-480Z"/>
+            </svg>
+        </span>
+    </div>
+    <span id="erro-senha" class="erro"></span>
 
-            <h4>Confirmar Senha:</h4>
-            <div class="campo-senha">
-            <input type="password" id="confirmarSenha" oninput="confirmarSenha()" required>
-            <span class="toggle-senha" onclick="toggleConfirmarSenha()" id="btnConfirmar"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#d4af37"><path d="M480.2-192q-148.2 0-264.7-80.5T48-480q51-127 167.3-207.5Q331.6-768 479.8-768t264.7 80.5Q861-607 912-480q-51 127-167.3 207.5Q628.4-192 480.2-192ZM181-130q-43.04-27.14-77.02-61.07T48-267l64-34q17 32 47 61t65 51l-43 59Zm299-134q115.38 0 209.69-58T833-480q-49-100-143.31-158T480-696q-115.38 0-209.69 58T127-480q49 100 143.31 158T480-264ZM246-96l43-61q35.07 13.71 74.03 22.86Q402-125 444-122.3V-50q-56-4-105.5-16T246-96Zm234-216q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm36 334v-72q42-2 80.97-11.14Q635.93-142.29 671-156l43 60q-44 19-93 30.5T516-50Zm263-80-43-59q38-24 66.5-52t45.5-60l64 34q-22 42-55.98 75.93Q822.04-157.14 779-130ZM480-480Z"/></svg></span>
-            </div>
+    <!-- Campo Confirmar Senha -->
+    <label for="confirmarSenha">
+        <h4>Confirmar Senha <span class="obrigatorio">*</span></h4>
+    </label>
+    <div class="campo-senha">
+        <input type="password" id="confirmarSenha" oninput="confirmarSenha()" required>
+        <span class="toggle-senha" onclick="toggleConfirmarSenha()" id="btnConfirmar">
+            <!-- Ícone de alternar visibilidade da senha -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#d4af37">
+                <path d="M480.2-192q-148.2 0-264.7-80.5T48-480q51-127 167.3-207.5Q331.6-768 479.8-768t264.7 80.5Q861-607 912-480q-51 127-167.3 207.5Q628.4-192 480.2-192ZM181-130q-43.04-27.14-77.02-61.07T48-267l64-34q17 32 47 61t65 51l-43 59Zm299-134q115.38 0 209.69-58T833-480q-49-100-143.31-158T480-696q-115.38 0-209.69 58T127-480q49 100 143.31 158T480-264ZM246-96l43-61q35.07 13.71 74.03 22.86Q402-125 444-122.3V-50q-56-4-105.5-16T246-96Zm234-216q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm36 334v-72q42-2 80.97-11.14Q635.93-142.29 671-156l43 60q-44 19-93 30.5T516-50Zm263-80-43-59q38-24 66.5-52t45.5-60l64 34q-22 42-55.98 75.93Q822.04-157.14 779-130ZM480-480Z"/>
+            </svg>
+        </span>
+    </div>
+    <span id="erro-confirmar-senha" class="erro"></span>
+
+    
 
             <button type="submit">Finalizar Cadastro</button>
         </form>

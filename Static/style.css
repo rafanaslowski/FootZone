@@ -160,12 +160,44 @@ h4 {
 }
 
 /* campo errado */
-.erro {
+.obrigatorio {
   color: red;
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 0.8rem;
 }
 
+input {
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+    border-color: #d4af37;
+}
+
+input[style*="border-color: red"] {
+    border-color: red !important;
+}
+
+.erro {
+    color: red;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.campo-senha {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-senha {
+    cursor: pointer;
+    margin-left: 10px;
+}
 /* visualizar senha */
 .campo-senha {
   position: relative;

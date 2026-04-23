@@ -110,17 +110,21 @@ function validarCampo(campo) {
         valor = valor.replace(/\D/g, "");
     }
 
-    //limpa erros anteriores
-    if (campo.id !== "senha") {
-        erro.textContent = "";
-        input.style.borderColor = "";
-    }
+    // Limpa erros anteriores
+    erro.textContent = "";
+    input.style.borderColor = "";
 
-    // senha é validada separadamente
-    if (campo.id === "senha") {
+    // Validação específica para o campo email
+    if (campo.id === "email") {
+        if (valor.length < campo.min || !valor.includes("@")) {
+            erro.textContent = "Digite um email válido.";
+            input.style.borderColor = "red";
+            return false;
+        }
         return true;
     }
 
+    // Validação genérica para outros campos
     if (valor === "") {
         erro.textContent = `${campo.nome} é obrigatório.`;
         input.style.borderColor = "red";
@@ -137,9 +141,6 @@ function validarCampo(campo) {
                 break;
             case "telefone":
                 erro.textContent = "Telefone inválido.";
-                break;
-            case "email":
-                erro.textContent = "Digite um email válido.";
                 break;
             default:
                 erro.textContent = `${campo.nome} inválido.`;
