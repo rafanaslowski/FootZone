@@ -256,3 +256,34 @@ input[style*="border-color: red"] {
     align-items: center;
     margin: 0;
 }
+
+/* --- RESPONSIVIDADE --- */
+
+/* Para celulares (telas menores que 600px) */
+@media (max-width: 600px) {
+    .vitrine {
+        grid-template-columns: 1fr; 
+        padding: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+}
+
+/* Para tablets (telas entre 601px e 992px) */
+@media (min-width: 601px) and (max-width: 992px) {
+    .vitrine {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
