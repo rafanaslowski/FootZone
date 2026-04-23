@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <title>Login Admin - FootZone</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="login-body-page">
     <div class="background"></div>
     <div class="login-caixa">
-<div class="campos">
-    <a href="/login" class="campoDesativado">Usuário</a>
-    <a href="#" class="campoDesativado">Empresa</a>
-    <a href="/admin" class="campoAtivo">Admin</a>
-</div>
+        <div class="campos">
+            <a href="/login" class="campoDesativado">Usuário</a>
+            <a href="#" class="campoDesativado">Empresa</a>
+            <a href="/admin" class="campoAtivo">Admin</a>
+        </div>
 
-        <h2>Acesso Administrativo</h2>
+        <h2>Acesso Restrito</h2>
 
-        <form action="/login/admin" method="post">
-            <h4>Email Admin:</h4>
-            <input type="email" name="email" required>
+<form action="/login/admin" method="post">
+    <h4>E-mail do Administrador:</h4>
+    <input type="email" name="email" required placeholder="ex: admin@footzone.com">
 
-            <h4>Chave de Acesso:</h4>
-            <input type="password" name="chave" id="chave" oninput="mascaraChavedeAcesso(this)" required>
+    <h4>Chave de Acesso:</h4>
+    <input type="password" name="chave" required placeholder="Digite sua chave secreta">
 
-            <button type="submit">Entrar no Painel</button>
-        </form>
+    <button type="submit">Entrar no Painel</button>
+</form>
+
+        <div style="margin-top: 15px;">
+            <p style="color: #888; font-size: 12px;"><a href="/login" style="color: #d4af37; text-decoration: none;">Voltar ao login comum</a></p>
+        </div>
     </div>
-    <script src="{{ url_for('static', path='/script.js') }}"></script>
 </body>
 </html>

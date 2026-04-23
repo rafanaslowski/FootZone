@@ -9,6 +9,11 @@ from db import conectar_banco
 
 app = FastAPI()
 
+from admin_users import router as admin_router # Importa o novo arquivo
+app.include_router(admin_router) # Registra as rotas
+
+print("Rotas carregadas:", [route.path for route in app.routes])
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
 app.mount("/Static", StaticFiles(directory=os.path.join(BASE_DIR, "..", "Static")), name="static")
 app.mount("/Imagens", StaticFiles(directory=os.path.join(BASE_DIR, "..", "Imagens")), name="imagens")
@@ -68,17 +73,26 @@ async def login_usuario(email: str = Form(...), senha: str = Form(...)):
 async def login_admin(email: str = Form(...), chave: str = Form(...)):
     conn = conectar_banco()
     cursor = conn.cursor(dictionary=True)
+    
     chave_hash = hashlib.sha256(chave.encode()).hexdigest()
-    cursor.execute("SELECT u.nome FROM usuario u JOIN admin a ON u.id_usuario = a.id_usuario WHERE u.email = %s AND a.chave_acesso = %s", (email, chave_hash))
+    
+    # Busca na nova tabela admin simplificada
+    query = "SELECT email FROM admin WHERE email = %s AND chave_acesso = %s"
+    cursor.execute(query, (email, chave_hash))
     admin = cursor.fetchone()
+    
     cursor.close()
     conn.close()
+
     if admin:
-        response = RedirectResponse(url="/catalogo", status_code=303)
-        response.set_cookie(key="admin_logado", value="true")
-        response.set_cookie(key="usuario_nome", value=admin['nome'])
+        # MUDANÇA AQUI: O destino agora é /admin/usuarios
+        response = RedirectResponse(url="/admin/usuarios", status_code=303)
+        
+        response.set_cookie(key="admin_logado", value="true", httponly=True)
+        response.set_cookie(key="usuario_nome", value="Admin", httponly=True)
         return response
-    raise HTTPException(status_code=401, detail="Credenciais de Admin Inválidas")
+    
+    raise HTTPException(status_code=401, detail="E-mail ou Chave incorretos")
 
 @app.post("/cadastrar/usuario")
 async def cadastrar_usuario(nome: str = Form(...), email: str = Form(...), cpf: str = Form(...), telefone: str = Form(...), senha: str = Form(...)):

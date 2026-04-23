@@ -38,12 +38,12 @@ CREATE TABLE cliente (
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS admin;
 CREATE TABLE admin (
-    id_usuario INT PRIMARY KEY,
-    nivel_acesso INT NOT NULL,
-    departamento VARCHAR(100),
-    chave_acesso VARCHAR(50), -- Adicionado para funcionar com seu main.py
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+    email VARCHAR(150) PRIMARY KEY,
+    chave_acesso VARCHAR(255) NOT NULL, -- Aumentei para 255 para suportar o Hash SHA256
+    nivel_acesso INT DEFAULT 1,
+    departamento VARCHAR(100)
 );
 
 -- As demais tabelas seguem o mesmo padrão...
@@ -174,8 +174,8 @@ INSERT INTO usuario (nome, email, senha_hash)
 VALUES ('Admin Master', 'admin@email.com', 'hashadmin');
 
 -- Admin
-INSERT INTO admin (id_usuario, nivel_acesso, departamento)
-VALUES (2, 1, 'TI');
+INSERT INTO admin (email, chave_acesso, departamento)
+VALUES ('admin@footzone.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'ADMIN');
 
 -- Empresa
 INSERT INTO empresa (nome_empresa, cnpj, endereco, telefone, id_admin)
