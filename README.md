@@ -1,3 +1,10 @@
+preparação do ambiente
+1- cd..
+2- pip install -r requirements.txt
+3- cd backend
+4- python main.py
+
+
 # FootZone MarketPlace
 
 O FutZone é uma plataforma de marketplace focada exclusivamente no universo dos tênis (sneakers). O objetivo é conectar compradores e vendedores, oferecendo uma experiência fluida, segura e estilosa para quem busca desde modelos casuais até as edições limitadas mais raras do mercado.

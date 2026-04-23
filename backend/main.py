@@ -1,5 +1,6 @@
 import os
 import uvicorn
+import hashlib  # Biblioteca nativa, não precisa instalar nada
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -47,8 +48,13 @@ async def page_catalogo(request: Request):
 async def cadastrar_usuario(nome: str = Form(...), email: str = Form(...), senha: str = Form(...), cpf: str = Form(...), telefone: str = Form(...)):
     conn = conectar_banco()
     cursor = conn.cursor()
+    
+    # APLICANDO O HASH: Transforma a senha em SHA-256 antes de enviar ao banco
+    senha_hash = hashlib.sha256(senha.encode()).hexdigest()
+    
     try:
-        cursor.execute("INSERT INTO usuario (nome, email, senha_hash) VALUES (%s, %s, %s)", (nome, email, senha))
+        # Agora salvamos 'senha_hash' em vez da senha aberta
+        cursor.execute("INSERT INTO usuario (nome, email, senha_hash) VALUES (%s, %s, %s)", (nome, email, senha_hash))
         id_user = cursor.lastrowid
         cursor.execute("INSERT INTO cliente (id_usuario, cpf, telefone) VALUES (%s, %s, %s)", (id_user, cpf.replace(".","").replace("-",""), telefone))
         conn.commit()
