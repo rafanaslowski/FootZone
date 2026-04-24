@@ -45,7 +45,7 @@ async def listar_usuarios(request: Request):
         print(f"Erro ao listar usuários: {e}")
         return HTMLResponse(content="Erro ao carregar banco de dados", status_code=500)
 
-# --- NOVA ROTA: EDITAR USUÁRIO (UPDATE) ---
+# --- UPDATE ---
 @router.post("/admin/usuarios/editar")
 async def editar_usuario(
     request: Request,
@@ -72,7 +72,7 @@ async def editar_usuario(
 
     return RedirectResponse(url="/admin/usuarios", status_code=303)
 
-# --- ROTA: DELETAR USUÁRIO ---
+# --- DELETAR USUÁRIO ---
 @router.post("/admin/usuarios/deletar/{id}")
 async def deletar_usuario(id: int, request: Request):
     verificar_admin(request)

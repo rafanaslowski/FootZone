@@ -54,9 +54,12 @@ CREATE TABLE empresa (
     cnpj CHAR(14) NOT NULL UNIQUE,
     endereco VARCHAR(255),
     telefone VARCHAR(20),
-    id_admin INT,
-    FOREIGN KEY (id_admin) REFERENCES admin(id_usuario)
-        ON DELETE SET NULL
+    email_admin VARCHAR(150), -- Coluna que guardará o email do admin
+    
+    -- Definindo a chave estrangeira corretamente
+    CONSTRAINT fk_empresa_admin 
+    FOREIGN KEY (email_admin) REFERENCES admin(email) 
+    ON DELETE SET NULL
 );
 
 CREATE TABLE categoria (
@@ -178,8 +181,8 @@ INSERT INTO admin (email, chave_acesso, departamento)
 VALUES ('admin@footzone.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'ADMIN');
 
 -- Empresa
-INSERT INTO empresa (nome_empresa, cnpj, endereco, telefone, id_admin)
-VALUES ('Nike Store', '12345678000199', 'Av Central, 500', '1133334444', 2);
+INSERT INTO empresa (nome_empresa, cnpj, endereco, telefone, email_admin) 
+VALUES ('Nike Store', '12345678000199', 'Av Central, 500', '1133334444', 'admin@footzone.com');
 
 -- Categoria
 INSERT INTO categoria (nome, descricao)
@@ -189,7 +192,11 @@ VALUES ('Corrida', 'Tênis para corrida e treino'),
 
 -- Produto
 INSERT INTO produto (nome, descricao, preco, estoque, tamanho, marca, id_categoria, id_empresa)
+VALUES ('Tênis Air Max', 'Tênis confortável para corrida', 599.90, 10, '39', 'Nike', 1, 1);
+INSERT INTO produto (nome, descricao, preco, estoque, tamanho, marca, id_categoria, id_empresa)
 VALUES ('Tênis Air Max', 'Tênis confortável para corrida', 599.90, 10, '42', 'Nike', 1, 1);
+INSERT INTO produto (nome, descricao, preco, estoque, tamanho, marca, id_categoria, id_empresa)
+VALUES ('Tênis Air Max', 'Tênis confortável para corrida', 599.90, 10, '37', 'Nike', 1, 1);
 
 -- Produto Imagem
 INSERT INTO produto_imagem (id_produto, url)

@@ -54,6 +54,7 @@ async def page_admin(request: Request):
 
 # --- ROTAS DE PROCESSAMENTO (POST) ---
 
+#READ LOGIN USUÁRIO
 @app.post("/login/usuario")
 async def login_usuario(email: str = Form(...), senha: str = Form(...)):
     conn = conectar_banco()
@@ -69,6 +70,7 @@ async def login_usuario(email: str = Form(...), senha: str = Form(...)):
         return response
     return RedirectResponse(url="/login", status_code=303)
 
+#READ LOGIN ADMIN
 @app.post("/login/admin")
 async def login_admin(email: str = Form(...), chave: str = Form(...)):
     conn = conectar_banco()
@@ -94,6 +96,7 @@ async def login_admin(email: str = Form(...), chave: str = Form(...)):
     
     raise HTTPException(status_code=401, detail="E-mail ou Chave incorretos")
 
+#Cadastro de usuário: CREATE
 @app.post("/cadastrar/usuario")
 async def cadastrar_usuario(nome: str = Form(...), email: str = Form(...), cpf: str = Form(...), telefone: str = Form(...), senha: str = Form(...)):
     conn = conectar_banco()

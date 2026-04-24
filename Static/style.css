@@ -257,6 +257,10 @@ input[style*="border-color: red"] {
     margin: 0;
 }
 
+.info {
+  color: white;
+}
+
 /* --- RESPONSIVIDADE --- */
 
 /* Para celulares (telas menores que 600px) */
